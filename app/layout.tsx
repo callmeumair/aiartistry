@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SessionProvider } from "next-auth/react";
 import { AuthUser } from "@/components/auth-user";
+import { Providers } from "@/components/providers";
 import Link from "next/link";
 
 const geistSans = Geist({
@@ -30,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground`}
       >
-        <SessionProvider>
+        <Providers>
           <header className="border-b">
             <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
               <Link href="/" className="font-semibold tracking-tight">AI Artistry</Link>
@@ -45,7 +45,7 @@ export default function RootLayout({
           <main className="mx-auto max-w-6xl px-6 py-8">
             {children}
           </main>
-        </SessionProvider>
+        </Providers>
       </body>
     </html>
   );
