@@ -120,3 +120,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Swiper minimal resets if used */
+.swiper {
+  --swiper-theme-color: oklch(0.21 0.006 285.885);
+}
+
+/* Reduce heavy motion for users preferring reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
