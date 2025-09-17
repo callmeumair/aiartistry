@@ -1,9 +1,9 @@
-import { supabaseAdmin } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 const BUCKET = process.env.SUPABASE_STORAGE_BUCKET || "aiartistry";
 
 export async function ensureBucket(): Promise<void> {
-	const client = supabaseAdmin;
+	const client = getSupabaseAdmin();
 	const { data: list, error: listError } = await client.storage.listBuckets();
 	if (listError) throw listError;
 	const exists = list?.some((b) => b.name === BUCKET);
@@ -21,7 +21,7 @@ export async function uploadFile(opts: {
 	contentType?: string;
 	upsert?: boolean;
 }): Promise<{ path: string; publicUrl: string }> {
-	const client = supabaseAdmin;
+	const client = getSupabaseAdmin();
 	await ensureBucket();
 	const { data, error } = await client.storage
     .from(BUCKET)
@@ -35,6 +35,6 @@ export async function uploadFile(opts: {
 }
 
 export function getPublicUrl(path: string): string {
-	const { data } = supabaseAdmin.storage.from(BUCKET).getPublicUrl(path);
+	const { data } = getSupabaseAdmin().storage.from(BUCKET).getPublicUrl(path);
 	return data.publicUrl;
 }
