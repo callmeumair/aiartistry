@@ -3,12 +3,13 @@
 import { motion } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Points, PointMaterial } from "@react-three/drei";
+import { EffectComposer, Bloom, DepthOfField, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
-function ParticleField({ count = 3000 }: { count?: number }) {
+function ParticleField({ count = 3000, parallax = { x: 0, y: 0 } }: { count?: number; parallax?: { x: number; y: number } }) {
 	const points = useMemo(() => {
 		const positions = new Float32Array(count * 3);
 		for (let i = 0; i < count; i++) {
@@ -23,11 +24,11 @@ function ParticleField({ count = 3000 }: { count?: number }) {
 	}, [count]);
 
 	const ref = useRef<THREE.Points>(null);
-	useFrame((state) => {
+    useFrame((state) => {
 		const t = state.clock.getElapsedTime();
 		if (ref.current) {
-			ref.current.rotation.y = t * 0.02;
-			ref.current.rotation.x = Math.sin(t * 0.1) * 0.05;
+            ref.current.rotation.y = t * 0.02 + parallax.x * 0.1;
+            ref.current.rotation.x = Math.sin(t * 0.1) * 0.05 + parallax.y * 0.1;
 		}
 	});
 
@@ -58,20 +59,36 @@ function FloatingNodes() {
 }
 
 function Background() {
-	const reduce = useReducedMotion();
-	return (
-		<Canvas className="absolute inset-0 -z-10" dpr={[1, 2]} camera={{ position: [0, 0, 3], fov: 45 }}>
-			<color attach="background" args={["transparent"]} />
-			<ambientLight intensity={0.4} />
-			<directionalLight position={[3, 3, 3]} intensity={0.6} />
-			{!reduce && (
-				<>
-					<ParticleField />
-					<FloatingNodes />
-				</>
-			)}
-		</Canvas>
-	);
+    const reduce = useReducedMotion();
+    const [parallax, setParallax] = useState({ x: 0, y: 0 });
+    return (
+        <Canvas
+            className="absolute inset-0 -z-10"
+            dpr={[1, 2]}
+            camera={{ position: [0, 0, 3], fov: 45 }}
+            onPointerMove={(e) => {
+                if (reduce) return;
+                const x = (e.clientX / window.innerWidth) * 2 - 1; // normalized -1..1
+                const y = (e.clientY / window.innerHeight) * 2 - 1;
+                setParallax({ x, y });
+            }}
+        >
+            <color attach="background" args={["transparent"]} />
+            <ambientLight intensity={0.4} />
+            <directionalLight position={[3, 3, 3]} intensity={0.6} />
+            {!reduce && (
+                <>
+                    <ParticleField parallax={parallax} />
+                    <FloatingNodes />
+                    <EffectComposer enableNormalPass={false}>
+                        <Bloom intensity={0.55} luminanceThreshold={0.2} luminanceSmoothing={0.1} mipmapBlur />
+                        <DepthOfField focusDistance={0.02} focalLength={0.02} bokehScale={1.6} />
+                        <Vignette eskil={false} offset={0.2} darkness={0.8} />
+                    </EffectComposer>
+                </>
+            )}
+        </Canvas>
+    );
 }
 
 export function Hero() {
