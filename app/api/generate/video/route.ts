@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 		const { url, path } = await generateVideoAndStore({ prompt, userId: session.user.id });
 		await prisma.generation.create({ data: { type: "VIDEO", prompt, fileUrl: url, userId: session.user.id } });
 		return NextResponse.json({ url, path });
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("/api/generate/video", error);
 		return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
 	}

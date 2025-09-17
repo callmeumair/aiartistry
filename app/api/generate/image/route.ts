@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 			data: { type: "IMAGE", prompt, fileUrl: url, userId: session.user.id },
 		});
 		return NextResponse.json({ url, path });
-	} catch (error: any) {
+	} catch (error: unknown) {
 		console.error("/api/generate/image", error);
 		return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
 	}

@@ -40,8 +40,9 @@ export default function GeneratorPage() {
       }
       const data = await res.json();
       setResultUrl(data.url as string);
-    } catch (err: any) {
-      setError(err?.message ?? "Generation failed. Please try again.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Generation failed. Please try again.";
+      setError(message);
     } finally {
       setIsLoading(false);
     }
