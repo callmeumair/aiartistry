@@ -19,11 +19,11 @@ export const authOptions: AuthOptions = {
 	secret: process.env.NEXTAUTH_SECRET,
 	session: { strategy: "database" },
 	callbacks: {
-		async session({ session, user }) {
-			if (session.user) {
-				(session.user as any).id = user.id;
-			}
-			return session;
-		},
+    async session({ session, user }) {
+      if (session.user) {
+        (session.user as { id?: string }).id = user.id;
+      }
+      return session;
+    },
 	},
 };

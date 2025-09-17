@@ -1,5 +1,6 @@
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import Image from "next/image";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
@@ -13,7 +14,7 @@ export default async function ProfilePage() {
           <div><span className="text-muted-foreground">Name:</span> {session.user.name}</div>
           <div><span className="text-muted-foreground">Email:</span> {session.user.email}</div>
           {session.user.image && (
-            <img src={session.user.image} alt="Avatar" className="h-16 w-16 rounded-full border" />
+            <Image src={session.user.image} alt="Avatar" width={64} height={64} className="h-16 w-16 rounded-full border" />
           )}
         </div>
       )}

@@ -24,8 +24,8 @@ export async function uploadFile(opts: {
 	const client = supabaseAdmin;
 	await ensureBucket();
 	const { data, error } = await client.storage
-		.from(BUCKET)
-		.upload(opts.path, opts.file as any, {
+    .from(BUCKET)
+    .upload(opts.path, opts.file as ArrayBuffer | Blob, {
 			contentType: opts.contentType,
 			upsert: opts.upsert ?? true,
 		});

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 type GenType = "image" | "video" | "design";
 
@@ -93,7 +94,7 @@ export default function GeneratorPage() {
                       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2">
                         <Label>Result</Label>
                         {t === "image" ? (
-                          <img src={resultUrl} alt="Generated" className="rounded-md border max-w-full h-auto" />
+                          <Image src={resultUrl} alt="Generated" width={512} height={512} className="rounded-md border h-auto w-full" />
                         ) : (
                           <a href={resultUrl} className="text-primary underline" target="_blank" rel="noreferrer">
                             Open generated {t}

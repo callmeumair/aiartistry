@@ -4,7 +4,7 @@ import Email from "next-auth/providers/email";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
-const providers = [] as any[];
+const providers: AuthOptions["providers"] = [];
 
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 	providers.push(
@@ -32,7 +32,7 @@ const authOptions: AuthOptions = {
 	callbacks: {
 		async session({ session, user }) {
 			if (session.user) {
-				(session.user as any).id = user.id;
+				(session.user as { id?: string }).id = user.id;
 			}
 			return session;
 		},

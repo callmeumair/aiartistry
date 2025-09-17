@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { AuthUser } from "@/components/auth-user";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +33,11 @@ export default function RootLayout({
         <SessionProvider>
           <header className="border-b">
             <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
-              <a href="/" className="font-semibold tracking-tight">AI Artistry</a>
+              <Link href="/" className="font-semibold tracking-tight">AI Artistry</Link>
               <nav className="flex items-center gap-4 text-sm">
-                <a href="/dashboard" className="hover:underline">Dashboard</a>
-                <a href="/generator" className="hover:underline">Generator</a>
-                <a href="/profile" className="hover:underline">Profile</a>
+                <Link href="/dashboard" className="hover:underline">Dashboard</Link>
+                <Link href="/generator" className="hover:underline">Generator</Link>
+                <Link href="/profile" className="hover:underline">Profile</Link>
               </nav>
               <AuthUser />
             </div>

@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default async function DashboardPage() {
@@ -43,7 +44,7 @@ export default async function DashboardPage() {
               <CardContent className="space-y-3">
                 <p className="text-sm text-muted-foreground line-clamp-3">{g.prompt}</p>
                 {g.type === "IMAGE" ? (
-                  <img src={g.fileUrl} alt="Generated" className="rounded-md border max-w-full h-auto" />
+                  <Image src={g.fileUrl} alt="Generated" width={480} height={360} className="rounded-md border h-auto w-full" />
                 ) : (
                   <a href={g.fileUrl} target="_blank" rel="noreferrer" className="text-primary underline text-sm">
                     Open {g.type.toLowerCase()} file
