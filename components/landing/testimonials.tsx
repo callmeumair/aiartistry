@@ -2,6 +2,7 @@
 
 import Marquee from "react-fast-marquee";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const logos = ["globe.svg", "vercel.svg", "next.svg", "window.svg"] as const;
 
@@ -13,7 +14,7 @@ export function Testimonials() {
 				<p className="mx-auto mt-3 max-w-2xl text-muted-foreground">From indie studios to global brands.</p>
 			</div>
 			<div className="mt-8 overflow-hidden rounded-xl border bg-card/60 py-4">
-				<Marquee pauseOnHover gradient gradientColor={[0,0,0,0]} speed={40}>
+				<Marquee pauseOnHover gradient={false} speed={40}>
 					{logos.concat(logos).map((logo, i) => (
 						<motion.div
 							key={`${logo}-${i}`}
@@ -22,7 +23,7 @@ export function Testimonials() {
 							viewport={{ once: true }}
 							className="mx-10 flex h-12 items-center"
 						>
-							<img src={`/${logo}`} alt="Client logo" className="h-8 w-auto opacity-70" />
+							<Image src={`/${logo}`} alt="Client logo" height={32} width={120} className="h-8 w-auto opacity-70" />
 						</motion.div>
 					))}
 				</Marquee>
